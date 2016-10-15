@@ -1,0 +1,24 @@
+{
+  "name": "rem-resource-api",
+  "version": "0.0.1",
+  "dependencies": {
+    "body-parser": "latest",
+    "express": "latest"
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "description": "An api for Rem the bot",
+  "main": "server.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DasWolke/rem-resource-api.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DasWolke/rem-resource-api/issues"
+  },
+  "homepage": "https://github.com/DasWolke/rem-resource-api#readme"
+}
