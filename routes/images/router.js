@@ -36,7 +36,7 @@ var authCheck = ((req, res, next) => {
             next();
         })
     } else {
-        return res.json({error: 1, message: 'Unauthorized!'})
+        return res.status(403).json({error: 1, message: 'Unauthorized!'})
     }
 });
 router.get('/i', (req, res) => {
