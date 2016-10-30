@@ -95,6 +95,10 @@ router.post('/i', upload.single('file'), authCheck, function (req, res, next) {
         console.log(image);
         if (image.filetype === 'image/jpeg' || image.filetype === 'image/png' || image.filetype === 'image/gif') {
             image.save(function (err) {
+                if (err) {
+                    console.log(err);
+                    res.status(500).json({error:1, message:'Internal error'});
+                }
                 res.status(200).json({error: 0, id: id, path: `/i/${id}`});
             });
         } else {
