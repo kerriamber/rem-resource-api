@@ -50,7 +50,7 @@ router.get('/i/r', (req, res) => {
             let number = random(0, Images.length - 1);
             if (Images.length > 0) {
                 let image = Images[number];
-                res.json({path: `/i/${image.id}`, id: image.id})
+                res.json({path: `/i/${image.id}.${getExt(image.path)}`, id: image.id})
             } else {
                 res.json({error: 1, message: 'No images with that type!'});
             }
@@ -61,7 +61,7 @@ router.get('/i/r', (req, res) => {
             let number = random(0, Images.length - 1);
             if (Images.length > 0) {
                 let image = Images[number];
-                res.json({path: `/i/${image.id}`, id: image.id, type:image.type})
+                res.json({path: `/i/${image.id}.${getExt(image.path)}`, id: image.id, type:image.type})
             } else {
                 res.json({error: 1, message: 'No images with that type!'});
             }
