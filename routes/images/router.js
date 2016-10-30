@@ -136,6 +136,10 @@ router.post('/i/url', authCheck, function (req, res, next) {
     });
     console.log(req.body);
     if (req.body.url && req.body.type) {
+        let nsfw = false;
+        if (typeof(req.body.nsfw) !== 'undefined') {
+            nsfw = (req.body.nsfw === 'true')
+        }
         let id = shortid.generate();
         let ext = getExt(req.body.url);
         request.get(req.body.url).pipe(fs.createWriteStream(path.join(__dirname, `../../images/${id}.${ext}`)));
@@ -144,7 +148,8 @@ router.post('/i/url', authCheck, function (req, res, next) {
             type: req.body.type,
             filetype: `image/${ext}`,
             path: path.join(__dirname, `../../images/${id}.${ext}`),
-            date: Date.now()
+            date: Date.now(),
+            nsfw: nsfw
         });
         console.log(image);
         image.save(function (err) {
