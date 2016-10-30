@@ -2,15 +2,23 @@
   "name": "rem-resource-api",
   "version": "0.0.1",
   "dependencies": {
-    "body-parser": "latest",
-    "express": "latest"
+    "body-parser": "^1.15.2",
+    "cors": "^2.8.1",
+    "express": "^4.14.0",
+    "mongoose": "^4.6.3",
+    "multer": "^1.2.0",
+    "rand-token": "^0.2.1",
+    "request": "^2.76.0",
+    "shortid": "^2.2.6"
   },
   "scripts": {
     "start": "node server.js"
   },
   "description": "An api for Rem the bot",
   "main": "server.js",
-  "devDependencies": {},
+  "devDependencies": {
+    "winston": "^2.2.0"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/DasWolke/rem-resource-api.git"
