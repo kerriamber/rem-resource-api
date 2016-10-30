@@ -69,7 +69,8 @@ router.get('/i/r', (req, res) => {
     }
 });
 router.get('/i/:id', (req, res) => {
-    ImageModel.findOne({id: req.params.id}, (err, Image) => {
+    let split = req.params.id.split('.');
+    ImageModel.findOne({id: split[0]}, (err, Image) => {
         if (err) return res.json({error: 1, message: err});
         if (Image) {
             res.sendFile(Image.path);
