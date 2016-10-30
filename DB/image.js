@@ -9,7 +9,8 @@ var imageSchema = mongoose.Schema({
     filetype: String,
     path: String,
     date: {type: Date, default:Date.now()},
-    originPath: String
+    originPath: String,
+    nsfw:Boolean
 });
 var imageModel = mongoose.model('Image', imageSchema);
 module.exports = imageModel;

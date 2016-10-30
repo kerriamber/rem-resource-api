@@ -44,24 +44,38 @@ router.get('/i', (req, res) => {
 });
 router.get('/i/r', (req, res) => {
     let type = req.query.type;
+    let nsfw = false;
+    if (typeof(req.query.nsfw) !== 'undefined') {
+        nsfw = (req.query.nsfw === 'true')
+    }
     if (typeof (type) !== 'undefined' && type) {
-        ImageModel.find({type: req.query.type}, (err, Images) => {
+        ImageModel.find({type: req.query.type, nsfw: nsfw}, (err, Images) => {
             if (err) return res.json({error: 1, message: err});
             let number = random(0, Images.length - 1);
             if (Images.length > 0) {
                 let image = Images[number];
-                res.json({path: `/i/${image.id}.${getExt(image.path)}`, id: image.id})
+                res.json({
+                    path: `/i/${image.id}.${getExt(image.path)}`,
+                    id: image.id,
+                    type: image.type,
+                    nsfw: image.nsfw
+                })
             } else {
                 res.json({error: 1, message: 'No images with that type!'});
             }
         });
     } else {
-        ImageModel.find({}, (err, Images) => {
+        ImageModel.find({nsfw: nsfw}, (err, Images) => {
             if (err) return res.json({error: 1, message: err});
             let number = random(0, Images.length - 1);
             if (Images.length > 0) {
                 let image = Images[number];
-                res.json({path: `/i/${image.id}.${getExt(image.path)}`, id: image.id, type:image.type})
+                res.json({
+                    path: `/i/${image.id}.${getExt(image.path)}`,
+                    id: image.id,
+                    type: image.type,
+                    nsfw: image.nsfw
+                })
             } else {
                 res.json({error: 1, message: 'No images with that type!'});
             }
@@ -85,20 +99,22 @@ router.post('/i', upload.single('file'), authCheck, function (req, res, next) {
     });
 
     if (req.file && req.body.type) {
+        let nsfw = req.body.type.startsWith('nsfw');
         var image = new ImageModel({
             id: id,
             name: req.file.originalname,
             type: req.body.type,
             filetype: req.file.mimetype,
             path: req.file.path,
-            date: Date.now()
+            date: Date.now(),
+            nsfw: nsfw
         });
         console.log(image);
         if (image.filetype === 'image/jpeg' || image.filetype === 'image/png' || image.filetype === 'image/gif') {
             image.save(function (err) {
                 if (err) {
                     console.log(err);
-                    res.status(500).json({error:1, message:'Internal error'});
+                    res.status(500).json({error: 1, message: 'Internal error'});
                 }
                 res.status(200).json({error: 0, id: id, path: `/i/${id}`});
             });
