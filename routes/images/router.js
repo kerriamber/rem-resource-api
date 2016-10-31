@@ -36,7 +36,7 @@ var authCheck = ((req, res, next) => {
             next();
         })
     } else {
-        return res.status(403).json({error: 1, message: 'Unauthorized!'})
+        return res.status(403).json({error: 403, message: 'Unauthorized!'})
     }
 });
 router.get('/i', (req, res) => {
@@ -61,7 +61,7 @@ router.get('/i/r', (req, res) => {
                     nsfw: image.nsfw
                 })
             } else {
-                res.json({error: 1, message: 'No images with that type!'});
+                res.json({error: 404, message: 'No images with that type!'});
             }
         });
     } else {
@@ -77,7 +77,7 @@ router.get('/i/r', (req, res) => {
                     nsfw: image.nsfw
                 })
             } else {
-                res.json({error: 1, message: 'No images with that type!'});
+                res.json({error: 404, message: 'No images with that type!'});
             }
         });
     }
@@ -114,12 +114,12 @@ router.post('/i', upload.single('file'), authCheck, function (req, res, next) {
             image.save(function (err) {
                 if (err) {
                     console.log(err);
-                    res.status(500).json({error: 1, message: 'Internal error'});
+                    res.status(500).json({error: 500, message: 'Internal error'});
                 }
                 res.status(200).json({error: 0, id: id, path: `/i/${id}`});
             });
         } else {
-            res.status(400).json({error: 1, message: 'This filetype is not allowed!'});
+            res.status(400).json({error: 400, message: 'This filetype is not allowed!'});
             fs.unlink(req.file.path, function (err) {
                 if (err) {
                     return err;
@@ -127,7 +127,7 @@ router.post('/i', upload.single('file'), authCheck, function (req, res, next) {
             });
         }
     } else {
-        res.status(400).json({error: 1, message: 'No file attached/no type property!'})
+        res.status(400).json({error: 400, message: 'No file attached/no type property!'})
     }
 });
 router.post('/i/url', authCheck, function (req, res, next) {
