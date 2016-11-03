@@ -1,6 +1,9 @@
 /**
  * Created by julia on 13.10.2016.
  */
+require('pmx').init({
+    http : true
+});
 var express = require('express');
 var app = express();
 var bodyParser = require("body-parser");
