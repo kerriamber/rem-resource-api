@@ -91,7 +91,7 @@ router.get('/i/:id', (req, res) => {
         } else {
             res.sendFile(path.join(__dirname, '../../images/404.png'))
         }
-    })
+    });
 });
 router.post('/i', upload.single('file'), authCheck, function (req, res, next) {
     req.connection.on('close', function (err) {
@@ -166,4 +166,14 @@ router.post('/i/url', authCheck, function (req, res, next) {
     } else {
         res.status(400).json({error: 1, message: 'No url attached/no type property!'})
     }
+});
+router.get('/i/t/:type', (req, res) => {
+    ImageModel.find({type: req.params.type},{id:1, nsfw:1}, (err, Images) => {
+        if (err) return res.json({error: 1, message: err});
+        if (Images.length > 0) {
+            res.json({error:0, type:req.params.type,images:Images})
+        } else {
+            res.status(404).json({error:404, message:'Nothing found owo'});
+        }
+    });
 });
