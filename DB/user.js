@@ -6,7 +6,9 @@ var userSchema = mongoose.Schema({
     token:String,
     id:String,
     access:[],
-    enabled:Boolean
+    enabled:Boolean,
+    name:String,
+    discordId:String
 });
 userSchema.methods.disable = function (cb) {
     this.model('users').update({id:this.id}, {$set:{enabled:false}}, cb);

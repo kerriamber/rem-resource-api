@@ -100,10 +100,18 @@ router.post('/i', upload.single('file'), authCheck, function (req, res, next) {
 
     if (req.file && req.body.type) {
         let nsfw = req.body.type.startsWith('nsfw');
+        let type = req.body.type;
+        let split = [];
+        if (req.body.type.startsWith('nsfw')) {
+            split = req.body.type.split('-');
+            if (split.length > 1) {
+                type = split[1];
+            }
+        }
         var image = new ImageModel({
             id: id,
             name: req.file.originalname,
-            type: req.body.type,
+            type: type,
             filetype: req.file.mimetype,
             path: req.file.path,
             date: Date.now(),
@@ -116,7 +124,7 @@ router.post('/i', upload.single('file'), authCheck, function (req, res, next) {
                     console.log(err);
                     res.status(500).json({error: 500, message: 'Internal error'});
                 }
-                res.status(200).json({error: 0, id: id, path: `/i/${id}`});
+                res.status(200).json({error: 0, id: id, path: `/i/${id}`, type:type, nsfw:nsfw});
             });
         } else {
             res.status(400).json({error: 400, message: 'This filetype is not allowed!'});
@@ -153,7 +161,7 @@ router.post('/i/url', authCheck, function (req, res, next) {
         });
         console.log(image);
         image.save(function (err) {
-            res.status(200).json({error: 0, id: id, path: `/i/${id}`});
+            res.status(200).json({error: 0, id: id, path: `/i/${id}`, type:req.body.type, nsfw:nsfw});
         });
     } else {
         res.status(400).json({error: 1, message: 'No url attached/no type property!'})
